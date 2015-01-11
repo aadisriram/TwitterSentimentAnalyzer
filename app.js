@@ -43,7 +43,8 @@ io.sockets.on('connection', function (socket) {
                         lovecount: love_count,
                         total: (hate_count + love_count),
                         loveperc: loveperc,
-                        hateperc: (100 - loveperc).toFixed(2)
+                        hateperc: (100 - loveperc).toFixed(2),
+                        imageurl: data['user']['profile_image_url']
                     });
             }
             if (data['text'].indexOf('hate') > -1) {
@@ -56,7 +57,8 @@ io.sockets.on('connection', function (socket) {
                         lovecount: love_count,
                         total: (hate_count + love_count),
                         loveperc: loveperc,
-                        hateperc: (100 - loveperc).toFixed(2)
+                        hateperc: (100 - loveperc).toFixed(2),
+                        imageurl: data['user']['profile_image_url']
                     });
             }
         });

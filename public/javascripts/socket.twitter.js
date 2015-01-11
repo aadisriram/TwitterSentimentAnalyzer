@@ -21,7 +21,9 @@ server.on("tweet_love", function(msg) {
       $('#tweetlove li:last').remove();
    }
 
-   $('#tweetlove ul').prepend('<li class="list-group-item">' + msg.name + ' : ' + msg.tweet + '</li>');
+   $('#tweetlove ul').prepend('<li class="list-group-item">' +
+   '<img src="' + msg.imageurl + '" />' +
+   '</div>' + msg.name + ' : ' + msg.tweet + '</li>');
 });
 
 server.on("tweet_hate", function(msg) {
@@ -31,7 +33,9 @@ server.on("tweet_hate", function(msg) {
    if($('#tweethate li').size() > 10) {
       $('#tweethate li:last').remove();
    }
-   $('#tweethate ul').prepend('<li class="list-group-item">' + msg.name + ' : ' + msg.tweet + '</li>');
+   $('#tweethate ul').prepend('<li class="list-group-item">' +
+   '<img src="' + msg.imageurl + '" />' +
+   '</div>' + msg.name + ' : ' + msg.tweet + '</li>');
 });
 
 console.log('Client: Connecting to server ' + server_name);
