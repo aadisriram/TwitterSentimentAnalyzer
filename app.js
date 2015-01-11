@@ -41,6 +41,7 @@ io.sockets.on('connection', function (socket) {
                         tweet:data['text'],
                         hatecount: hate_count,
                         lovecount: love_count,
+                        total: (hate_count + love_count),
                         loveperc: loveperc,
                         hateperc: (100 - loveperc).toFixed(2)
                     });
@@ -53,6 +54,7 @@ io.sockets.on('connection', function (socket) {
                         tweet: data['text'],
                         hatecount: hate_count,
                         lovecount: love_count,
+                        total: (hate_count + love_count),
                         loveperc: loveperc,
                         hateperc: (100 - loveperc).toFixed(2)
                     });

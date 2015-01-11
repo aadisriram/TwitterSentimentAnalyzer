@@ -6,6 +6,7 @@ var server_name = "http://127.0.0.1:3000/";
 var server = io.connect(server_name);
 
 function updateData(msg) {
+   $('#totalcount').text(msg.total);
    $('#counterlove').text(msg.lovecount);
    $('#counterhate').text(msg.hatecount);
    $('#perclove').text(msg.loveperc + '%');
