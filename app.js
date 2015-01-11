@@ -30,38 +30,38 @@ var track_words = ['love', 'hate'];
 var love_count = 0;
 var hate_count = 0;
 
-io.sockets.on('connection', function (socket) {
-    twit.stream('statuses/filter', {track: track_words}, function (stream) {
-        stream.on('data', function (data) {
-            if (data['text'].indexOf('love') > -1) {
-                love_count++;
-                var loveperc = getLovePerc();
-                socket.volatile.emit("tweet_love",
-                    {name:data['user']['screen_name'],
-                        tweet:data['text'],
-                        hatecount: hate_count,
-                        lovecount: love_count,
-                        total: (hate_count + love_count),
-                        loveperc: loveperc,
-                        hateperc: (100 - loveperc).toFixed(2),
-                        imageurl: data['user']['profile_image_url']
-                    });
-            }
-            if (data['text'].indexOf('hate') > -1) {
-                hate_count++;
-                var loveperc = getLovePerc();
-                socket.volatile.emit("tweet_hate",
-                    {name: data['user']['screen_name'],
-                        tweet: data['text'],
-                        hatecount: hate_count,
-                        lovecount: love_count,
-                        total: (hate_count + love_count),
-                        loveperc: loveperc,
-                        hateperc: (100 - loveperc).toFixed(2),
-                        imageurl: data['user']['profile_image_url']
-                    });
-            }
-        });
+twit.stream('statuses/filter', {track: track_words}, function (stream) {
+    stream.on('data', function (data) {
+        if (data['text'].indexOf('love') > -1) {
+            love_count++;
+            var loveperc = getLovePerc();
+            io.sockets.emit("tweet_love",
+                {
+                    name: data['user']['screen_name'],
+                    tweet: data['text'],
+                    hatecount: hate_count,
+                    lovecount: love_count,
+                    total: (hate_count + love_count),
+                    loveperc: loveperc,
+                    hateperc: (100 - loveperc).toFixed(2),
+                    imageurl: data['user']['profile_image_url']
+                });
+        }
+        if (data['text'].indexOf('hate') > -1) {
+            hate_count++;
+            var loveperc = getLovePerc();
+            io.sockets.emit("tweet_hate",
+                {
+                    name: data['user']['screen_name'],
+                    tweet: data['text'],
+                    hatecount: hate_count,
+                    lovecount: love_count,
+                    total: (hate_count + love_count),
+                    loveperc: loveperc,
+                    hateperc: (100 - loveperc).toFixed(2),
+                    imageurl: data['user']['profile_image_url']
+                });
+        }
     });
 });
 
