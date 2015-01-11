@@ -2,7 +2,7 @@
  * Created by aadisriram on 1/10/15.
  */
 
-var server_name = "http://127.0.0.1:3000/";
+var server_name = "http://twitteranalyzeraa.herokuapp.com/";
 var server = io.connect(server_name);
 
 function updateData(msg) {
