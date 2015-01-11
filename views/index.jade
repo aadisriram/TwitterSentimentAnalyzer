@@ -1,0 +1,41 @@
+extends layout
+
+block content
+  h1= title
+  div#tweetcontainer
+    table.table.table-striped
+      thead
+        tr
+          th(colspan='2')
+            h3 Love
+          th(colspan='2')
+            h3 Hate
+      tbody
+        tr
+          td
+            h3 Number of Love Tweets
+          td
+            h3#counterlove.
+              0
+          td
+            h3 Number of Hate Tweets
+          td
+            h3#counterhate.
+              0
+        tr
+          td
+            h3 Percentage Love
+          td
+            h3#perclove
+          td
+            h3 Percentage Hate
+          td
+            h3#perchate
+
+    div.col-md-6#tweetlove
+      h3 Tweets with the word love
+      ul.list-group
+    div.col-md-6#tweethate
+
+      h3 Tweets with the word hate
+      ul.list-group
