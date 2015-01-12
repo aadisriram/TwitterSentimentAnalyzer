@@ -22,10 +22,10 @@ var io = require('socket.io').listen(server);
 var twitter = require('immortal-ntwitter');
 
 var twit = twitter.create({
-    consumer_key: 'v9BIUekmGglxjrty77VbNZdPM',
-    consumer_secret: 'qD4mnlXLHPdhbDOrZvGSRJjv0UEzwxZD3cVbrSqQbWgMXRDn83',
-    access_token_key: '25076520-1T97cLiNDmjqAgFcBDcnwPURkyxh1Ta6WQlTSZkpS',
-    access_token_secret: 'NWnJflgeXljmeKtzkbei3oigd1ung2lahm3vYxJje7M60'
+    consumer_key: process.env.TWITTER_CONSUMER_KEY,
+    consumer_secret: process.env.TWITTER_CONSUMER_SECRET,
+    access_token_key: process.env.TWITTER_ACCESS_TOKEN_KEY,
+    access_token_secret: process.env.TWITTER_ACCESS_TOKEN_SECRET
 });
 
 var track_words = ['love', 'hate'];
