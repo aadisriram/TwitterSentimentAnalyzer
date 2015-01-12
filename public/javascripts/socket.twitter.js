@@ -2,7 +2,9 @@
  * Created by aadisriram on 1/10/15.
  */
 
-var server_name = "http://twitteranalyzeraa.herokuapp.com/";
+var port = 3000;
+
+var server_name = "http://localhost:" + port + "/";
 var server = io.connect(server_name);
 
 function updateData(msg) {
@@ -11,6 +13,8 @@ function updateData(msg) {
    $('#counterhate').text(msg.hatecount);
    $('#perclove').text(msg.loveperc + '%');
    $('#perchate').text(msg.hateperc + '%');
+   $('#proglove').css('width', msg.loveperc + '%').attr('aria-valuenow', msg.loveperc);
+   $('#proghate').css('width', msg.hateperc + '%').attr('aria-valuenow', msg.hateperc);
 }
 
 server.on("tweet_love", function(msg) {

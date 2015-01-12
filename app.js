@@ -11,15 +11,17 @@ var users = require('./routes/users');
 var app = express();
 var http = require('http');
 
+var port = process.env.PORT || 3000;
+
 var server = http.createServer(app);
 
 server.listen(3000);
 
 var io = require('socket.io').listen(server);
 
-var twitter = require('ntwitter');
+var twitter = require('immortal-ntwitter');
 
-var twit = new twitter({
+var twit = twitter.create({
     consumer_key: 'v9BIUekmGglxjrty77VbNZdPM',
     consumer_secret: 'qD4mnlXLHPdhbDOrZvGSRJjv0UEzwxZD3cVbrSqQbWgMXRDn83',
     access_token_key: '25076520-1T97cLiNDmjqAgFcBDcnwPURkyxh1Ta6WQlTSZkpS',
@@ -30,12 +32,12 @@ var track_words = ['love', 'hate'];
 var love_count = 0;
 var hate_count = 0;
 
-twit.stream('statuses/filter', {track: track_words}, function (stream) {
+twit.immortalStream('statuses/filter', {track: track_words}, function (stream) {
     stream.on('data', function (data) {
-        if (data['text'].indexOf('love') > -1) {
+        if (data['text'].toLowerCase().indexOf(track_words[0]) > -1) {
             love_count++;
             var loveperc = getLovePerc();
-            io.sockets.emit("tweet_love",
+            io.emit("tweet_love",
                 {
                     name: data['user']['screen_name'],
                     tweet: data['text'],
@@ -47,10 +49,10 @@ twit.stream('statuses/filter', {track: track_words}, function (stream) {
                     imageurl: data['user']['profile_image_url']
                 });
         }
-        if (data['text'].indexOf('hate') > -1) {
+        if (data['text'].toLowerCase().indexOf(track_words[1]) > -1) {
             hate_count++;
             var loveperc = getLovePerc();
-            io.sockets.emit("tweet_hate",
+            io.emit("tweet_hate",
                 {
                     name: data['user']['screen_name'],
                     tweet: data['text'],
