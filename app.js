@@ -19,8 +19,11 @@ server.listen(3000);
 
 var io = require('socket.io').listen(server);
 
+//Using immortal-ntwitter to avoid twitter dropping the connection
+//to affect our sentiment analyzers functioning.
 var twitter = require('immortal-ntwitter');
 
+//Creating the immortal-ntwitter client
 var twit = twitter.create({
     consumer_key: process.env.TWITTER_CONSUMER_KEY,
     consumer_secret: process.env.TWITTER_CONSUMER_SECRET,
@@ -28,15 +31,19 @@ var twit = twitter.create({
     access_token_secret: process.env.TWITTER_ACCESS_TOKEN_SECRET
 });
 
+//The words that define the tweets to pull
 var track_words = ['love', 'hate'];
 var love_count = 0;
 var hate_count = 0;
 
+//Starting the stream with the track words mentioned to filter out
+//unwanted tweets on the twitter server side itself.
 twit.immortalStream('statuses/filter', {track: track_words}, function (stream) {
     stream.on('data', function (data) {
         if (data['text'].toLowerCase().indexOf(track_words[0]) > -1) {
             love_count++;
             var loveperc = getLovePerc();
+            //Emitting here to enable multiple clients
             io.emit("tweet_love",
                 {
                     name: data['user']['screen_name'],
@@ -52,6 +59,7 @@ twit.immortalStream('statuses/filter', {track: track_words}, function (stream) {
         if (data['text'].toLowerCase().indexOf(track_words[1]) > -1) {
             hate_count++;
             var loveperc = getLovePerc();
+            //Emitting here to enable multiple clients
             io.emit("tweet_hate",
                 {
                     name: data['user']['screen_name'],
@@ -67,6 +75,8 @@ twit.immortalStream('statuses/filter', {track: track_words}, function (stream) {
     });
 });
 
+//static global function to calculate the percentage of tweets
+//with the word love in them.
 function getLovePerc() {
     return (((love_count)/(love_count + hate_count))*100).toFixed(2);
 }

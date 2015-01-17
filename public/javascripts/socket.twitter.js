@@ -7,6 +7,8 @@ var port = 3000;
 var server_name = "http://localhost:" + port + "/";
 var server = io.connect(server_name);
 
+//Utility function to calculate and update the UI
+//with the new data that has been received.
 function updateData(msg) {
    $('#totalcount').text(msg.total);
    $('#counterlove').text(msg.lovecount);
@@ -17,10 +19,14 @@ function updateData(msg) {
    $('#proghate').css('width', msg.hateperc + '%').attr('aria-valuenow', msg.hateperc);
 }
 
+//socket listener
 server.on("tweet_love", function(msg) {
 
    updateData(msg);
 
+   //Discarding old tweets to prevent DOM from growing too
+   //big and destroying the browser! Trust me its crazy if you
+   //don't control this.
    if($('#tweetlove li').size() > 10) {
       $('#tweetlove li:last').remove();
    }
